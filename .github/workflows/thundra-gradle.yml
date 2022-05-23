@@ -38,11 +38,12 @@ jobs:
     - name: Thundra Gradle Test Instrumentation
   # You may pin to the exact commit or the version.
   # uses: thundra-io/thundra-gradle-test-action@51f3010b4e57b6027dd8d28ecc474153edc03c8c
-      uses: thundra-io/thundra-gradle-test-action@v1.0.4
+      uses: thundra-io/thundra-gradle-test-action@v1
+      env:
+        thundra_agent_debug_enable: true
       with:
         apikey: ${{ secrets.THUNDRA_API_KEY }}
         project_id: ${{ secrets.THUNDRA_PROJECTID }}
-        thundra_agent_debug_enable: true
         command: ./gradlew build
         
     #- name: Foresight Test Report Uploader
