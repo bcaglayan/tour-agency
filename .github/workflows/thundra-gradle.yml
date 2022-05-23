@@ -1,0 +1,51 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Thundra V1 Gradle Try
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+      with:
+        arguments: build
+        
+    - name: Thundra Gradle Test Instrumentation
+  # You may pin to the exact commit or the version.
+  # uses: thundra-io/thundra-gradle-test-action@51f3010b4e57b6027dd8d28ecc474153edc03c8c
+      uses: thundra-io/thundra-gradle-test-action@v1.0.4
+      with:
+        apikey: ${{ secrets.THUNDRA_API_KEY }}
+        project_id: ${{ secrets.THUNDRA_PROJECTID }} 
+        command: ./gradlew build
+        
+    #- name: Foresight Test Report Uploader
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: test-result-junit
+    #    path: target
