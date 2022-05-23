@@ -41,7 +41,8 @@ jobs:
       uses: thundra-io/thundra-gradle-test-action@v1.0.4
       with:
         apikey: ${{ secrets.THUNDRA_API_KEY }}
-        project_id: ${{ secrets.THUNDRA_PROJECTID }} 
+        project_id: ${{ secrets.THUNDRA_PROJECTID }}
+        thundra_agent_debug_enable: true
         command: ./gradlew build
         
     #- name: Foresight Test Report Uploader
